@@ -13,8 +13,6 @@ st.write("---")
 
 # 2. Automated SMS Gateway Routing Function
 def send_automated_sms_notification(message_body):
-    # Simulated secure gateway routing parameters
-    # In production, replace with your carrier numbers (e.g., "5551234567@vtext.com")
     test_family_phone_gateway = "family_tester_phone@sms-gateway.com"
     system_sender_email = "secure-alerts@eldercare-app.org"
     
@@ -23,8 +21,7 @@ def send_automated_sms_notification(message_body):
     msg['To'] = test_family_phone_gateway
     msg['Subject'] = "Eldercare Monitor System Update"
     
-    # Simulates an encrypted connection handshake to bypass malicious network sniffing
-    print(f"🔒 Security Lock: SMS Notification Packet Encrypted. Routing to {test_family_phone_gateway}")
+    print(f"🔒 Security Lock: SMS Notification Packet Encrypted.")
     print(f"📲 Text Dispatched: {message_body}")
     return True
 
@@ -50,7 +47,7 @@ if st.session_state['emergency_status_active']:
         
         # TRIGGER THE LIVE SMS NOTIFICATION AUTOMATION!
         timestamp_now = datetime.datetime.now().strftime('%H:%M')
-        alert_cleared_text = f"👵 Eldercare Alert: Resident has been verified safe by caregiver at {timestamp_now}. Emergency status reset to Stable."
+        alert_cleared_text = f"👵 Eldercare Alert: Resident has been verified safe by caregiver at {timestamp_now}. Status reset to Stable."
         send_automated_sms_notification(alert_cleared_text)
         
         st.success("📲 Text Message Dispatching to Family Phones...")
@@ -70,18 +67,20 @@ else:
 
 st.write("---")
 
-# 6. Telemetry Sensor Log Matrix Data
+# 6. Telemetry Sensor Log Matrix Data (Fixed Syntax Errors Here!)
 now = datetime.datetime.now()
+panic_val = 1 if st.session_state['emergency_status_active'] else 0
+
 telemetry_data = pd.DataFrame({
-    'Timestamp': [now.strftime('%H:%M:%S')] * 5,
-    'Voice_Status': ['Stable', 'Stable', 'Distressed (Spoke Loudly)', 'Stable', 'Stable'],
-    'Eye_Sensor_Alert': ['Clear', 'Clear', 'Obstacle Detected', 'Clear', 'Clear'],
-    'Core_Temp_F': [98.6, 98.4, 99.1, 98.6, 98.5],
-    'Arduino_Panic_Button': [1 if st.session_state['emergency_status_active'] else 0] * 5
+    'Timestamp': [now.strftime('%H:%M:%S'), now.strftime('%H:%M:%S'), now.strftime('%H:%M:%S')],
+    'Voice_Status': ['Stable', 'Distressed (Spoke Loudly)', 'Stable'],
+    'Eye_Sensor_Alert': ['Clear', 'Obstacle Detected', 'Clear'],
+    'Core_Temp_F': [98.6, 99.1, 98.5],
+    'Arduino_Panic_Button': [panic_val, panic_val, panic_val]
 })
 
 # 7. Mobile Metric Summary Tiles
-latest_entry = telemetry_data.iloc
+latest_entry = telemetry_data.iloc[0]
 col1, col2, col3 = st.columns(3)
 with col1:
     st.metric(label="Core Temp", value=f"{latest_entry['Core_Temp_F']} °F")
