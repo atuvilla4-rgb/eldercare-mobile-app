@@ -10,11 +10,12 @@ st.markdown("### 👵 Eldercare Intelligence Platform")
 st.markdown("*Long-Term Care Clinical Radar & Voice Assessment Tool*")
 st.write("---")
 
-# 2. Automated Voice AI Routing Logic (Integrated directly into the system)
+# 2. English Butler Accent Audio Routing Logic
 def trigger_voice_clinical_alert(text_to_speak):
-    # Uses the slow English speech configuration we verified earlier to bypass the fast robotic tone
-    print(f"🎙️ Broadcasting Audio Alert: {text_to_speak}")
-    os.system(f"espeak -v en -s 130 '{text_to_speak}' 2>/dev/null")
+    print(f"🎙️ Broadcasting Butler Audio Alert: {text_to_speak}")
+    # Using 'en-gb+m3' switches to a mature, deep male British English tone
+    # -s 125 introduces a calm, poised butler delivery speed
+    os.system(f"espeak -v en-gb+m3 -s 125 '{text_to_speak}' 2>/dev/null")
     return True
 
 # 3. Initialize Session State Memory for the Alerts
@@ -38,8 +39,8 @@ if st.session_state['emergency_status_active']:
     fall_risk = 85                  
     infection_risk = 90             
 else:
-    hr_list = [78, 80, 79]
-    resp_list = [16, 17, 16]
+    hr_list = [72, 74, 75]
+    resp_list = [16, 15, 16]
     temp_list = [98.6, 98.4, 98.5]
     fall_risk = 12
     infection_risk = 8
@@ -107,8 +108,8 @@ if st.session_state['emergency_status_active']:
         if st.button("⚠️ Clear Emergency State & Log Intervention Cache", use_container_width=True):
             st.session_state['emergency_status_active'] = False
             
-            # SPEAK THE SUCCESS MESSAGE THROUGH THE AUDIO CHANNELS!
-            trigger_voice_clinical_alert("Alert cleared. Resident has been verified safe by the caregiver on shift.")
+            # DEPLOY THE CINEMATIC BUTLER AUDIO HANDSHAKE
+            trigger_voice_clinical_alert("Alert cleared, sir. The resident has been verified safe by the caregiver on shift.")
             
             st.rerun()
     else:
@@ -118,8 +119,8 @@ else:
     if st.button("🔄 Force-Trigger Vitals Spike Simulation (For System Testing)", use_container_width=True):
         st.session_state['emergency_status_active'] = True
         
-        # SPEAK THE WARNING MSG INSTANTLY THE EXACT SECOND THE ALERT FAILS!
-        trigger_voice_clinical_alert("Warning. Critical vitals spike detected. Heart rate is above one hundred. Evaluate for pneumonia risk.")
+        # DEPLOY THE URGENT CINEMATIC BUTLER AUDIO HANDSHAKE
+        trigger_voice_clinical_alert("Warning, sir. A critical vitals spike has been detected. Heart rate is above one hundred. Pray evaluate for pneumonia risk.")
         
         st.rerun()
 
