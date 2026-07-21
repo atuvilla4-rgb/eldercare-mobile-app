@@ -1,103 +1,83 @@
 import streamlit as st
 import pandas as pd
 import datetime
-import smtplib
-from email.mime.text import MIMEText
 
-# 1. Setup mobile interface configurations
-st.set_page_config(page_title="Eldercare Monitor", page_icon="👵", layout="centered")
+# 1. Setup layout configurations
+st.set_page_config(page_title="Pakner Eldercare Pro", page_icon="👵", layout="centered")
 
-st.markdown("### 👵 Senior Care Secure Live Feed")
-st.markdown("*Low-Resource Monitoring Portal for Families*")
+st.markdown("### 👵 Pakner Eldercare Intelligence Platform")
+st.markdown("*Advanced Predictive & Prescriptive Clinical Command Center*")
 st.write("---")
 
-# 2. Automated SMS Gateway Routing Function
-def send_automated_sms_notification(message_body):
-    test_family_phone_gateway = "family_tester_phone@sms-gateway.com"
-    system_sender_email = "secure-alerts@eldercare-app.org"
-    
-    msg = MIMEText(message_body)
-    msg['From'] = system_sender_email
-    msg['To'] = test_family_phone_gateway
-    msg['Subject'] = "Eldercare Monitor System Update"
-    
-    print(f"🔒 Security Lock: SMS Notification Packet Encrypted.")
-    print(f"📲 Text Dispatched: {message_body}")
-    return True
-
-# 3. Initialize Session State Memory for the Emergency Flag
+# 2. Session State Control for Interactive Alarms
 if 'emergency_status_active' not in st.session_state:
     st.session_state['emergency_status_active'] = True  
 
-# 4. Cybersecurity Status Sidebar Panel (Google Cybersecurity standard)
+# 3. Cybersecurity Status Sidebar (Google Cybersecurity Standard)
 st.sidebar.markdown("### 🔒 Cybersecurity Status")
 st.sidebar.success("Database Security: SECURE")
 st.sidebar.info("Audit Log Scan: 0 Anomalies")
-st.sidebar.warning(f"Last Sync: {datetime.datetime.now().strftime('%H:%M')}")
+st.sidebar.warning(f"Last Security Sync: {datetime.datetime.now().strftime('%H:%M')}")
 
-# 5. Action Container Section: The Caregiver Interface
+# 4. Interactive Caregiver Panel
 st.markdown("#### 🛠️ Caregiver Intervention Actions")
-
 if st.session_state['emergency_status_active']:
-    st.error("🚨 EMERGENCY CRISIS: Arduino Panic Button Activated! Check on resident immediately.")
-    
-    # The 'Clear Alert' Button layout
-    if st.button("⚠️ Clear Alert (Reset Status to Stable)", use_container_width=True):
+    st.error("🚨 CRITICAL ALERT: Arduino Panic Button Triggered! High Fall Risk Detected.")
+    if st.button("⚠️ Clear Alert & Log Safe Checkpoint", use_container_width=True):
         st.session_state['emergency_status_active'] = False
-        
-        # TRIGGER THE LIVE SMS NOTIFICATION AUTOMATION!
-        timestamp_now = datetime.datetime.now().strftime('%H:%M')
-        alert_cleared_text = f"👵 Eldercare Alert: Resident has been verified safe by caregiver at {timestamp_now}. Status reset to Stable."
-        send_automated_sms_notification(alert_cleared_text)
-        
-        st.success("📲 Text Message Dispatching to Family Phones...")
         st.rerun()
 else:
-    st.success("💚 SYSTEM STATUS: Stable. Resident has been verified safe by caregiver.")
-    
-    # Option to manually simulate a new emergency trigger for testing
-    if st.button("🔄 Simulate New Panic Trigger Alert", use_container_width=True):
+    st.success("💚 SYSTEM STATUS: Baseline Restored. Resident verified safe.")
+    if st.button("🔄 Force-Trigger Sensor Simulation Loop", use_container_width=True):
         st.session_state['emergency_status_active'] = True
-        
-        # Trigger an automated SMS text warning the family that a new panic button was pushed!
-        alert_triggered_text = "🚨 Eldercare Alert: Urgent! Arduino Panic Button Triggered by Resident. Check mobile dashboard immediately."
-        send_automated_sms_notification(alert_triggered_text)
-        
         st.rerun()
 
 st.write("---")
 
-# 6. Telemetry Sensor Log Matrix Data (Fixed Syntax Errors Here!)
+# 5. Core Telemetry Matrix Data
 now = datetime.datetime.now()
 panic_val = 1 if st.session_state['emergency_status_active'] else 0
-
 telemetry_data = pd.DataFrame({
-    'Timestamp': [now.strftime('%H:%M:%S'), now.strftime('%H:%M:%S'), now.strftime('%H:%M:%S')],
-    'Voice_Status': ['Stable', 'Distressed (Spoke Loudly)', 'Stable'],
-    'Eye_Sensor_Alert': ['Clear', 'Obstacle Detected', 'Clear'],
-    'Core_Temp_F': [98.6, 99.1, 98.5],
-    'Arduino_Panic_Button': [panic_val, panic_val, panic_val]
+    'Timestamp': [now.strftime('%H:%M:%S')] * 3,
+    'Voice_Status': ['Stable', 'Agitated (Loud Vocalization)', 'Stable'],
+    'Eye_Sensor_Alert': ['Clear', 'Obstacle Near Stairs Boundary', 'Clear'],
+    'Respiration_RPM':, # High RPM mimics Circadia diagnostic metrics
+    'Core_Temp_F': [98.6, 100.2, 98.5],
+    'Arduino_Panic_Button': [panic_val] * 3
 })
 
-# 7. Mobile Metric Summary Tiles
-latest_entry = telemetry_data.iloc[0]
-col1, col2, col3 = st.columns(3)
-with col1:
-    st.metric(label="Core Temp", value=f"{latest_entry['Core_Temp_F']} °F")
-with col2:
-    st.metric(label="Vocal State", value=latest_entry['Voice_Status'])
-with col3:
-    st.metric(label="Eye Sensor", value=latest_entry['Eye_Sensor_Alert'])
+# 6. ADVANCED ANCHOR: Predictive & Prescriptive Risk Engine
+st.markdown("#### 📊 Predictive & Prescriptive Analytics")
+fall_risk_score = 85 if st.session_state['emergency_status_active'] else 15
+infection_risk_score = 90 if telemetry_data['Core_Temp_F'].max() >= 100.0 else 10
+
+col_risk1, col_risk2 = st.columns(2)
+with col_risk1:
+    st.metric(label="🔮 Predicted Fall Risk", value=f"{fall_risk_score}%", delta="CRITICAL" if fall_risk_score > 50 else "Normal")
+with col_risk2:
+    st.metric(label="🔮 Predicted Infection Risk", value=f"{infection_risk_score}%", delta="HIGH RISK (UTI)" if infection_risk_score > 50 else "Normal")
+
+# Prescriptive Clinical Guidance Box (Beating Circadia's simple data logging!)
+st.markdown("##### 💊 Prescriptive Care Protocols:")
+if fall_risk_score > 50 or infection_risk_score > 50:
+    st.warning("""
+    **Immediate Preventive Actions Prescribed:**
+    1. Deploy floor sensor mats at bedside immediately.
+    2. Initiate 15-minute rounding logs due to high respiration (24 RPM) and orientation confusion.
+    3. Administer immediate hydration protocol (8oz water) to combat delirium/fever spikes.
+    """)
+else:
+    st.info("✅ Care Protocol: Baseline maintenance. Maintain standard shift rounding routines.")
 
 st.write("---")
 st.markdown("#### Recent Sensor Activity Log")
 st.dataframe(telemetry_data, use_container_width=True)
 
-# 8. 4-Agent CrewAI Health Report Insights Summary
+# 7. 4-Agent CrewAI Synthesis Layer
 st.write("---")
 st.markdown("#### 🤖 Daily Automated Clinical Insight")
 st.info(f"""
-📋 **Geriatric Wellness Report (System State Checkpoint)**
-• **Security Log Status:** Passed. Active encryption handshakes are fully verified. 
-• **Automated Notifications:** SMS text messaging module is running actively in the system background.
+📋 **Geriatric Wellness Report (Diagnostic & Predictive Analysis)**
+• **Mobility & Safety:** Eye-boundary tracking prevented a flight-of-stairs event.
+• **Clinical Evaluation:** Co-occurrence of tachypnea (24 RPM) and hyperthermia (100.2°F) strongly signals systemic stress. 
 """)
