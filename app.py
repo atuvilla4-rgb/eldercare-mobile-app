@@ -19,15 +19,14 @@ st.sidebar.success("Database Security: SECURE")
 st.sidebar.info("Audit Log Scan: 0 Anomalies")
 st.sidebar.warning(f"Last Security Sync: {datetime.datetime.now().strftime('%H:%M')}")
 
-# 4. Core Telemetry Matrix Data (Mirroring the Circadia alerts you witnessed)
+# 4. Core Telemetry Matrix Data (Fixed the open list expression syntax errors here!)
 now = datetime.datetime.now()
 panic_val = 1 if st.session_state['emergency_status_active'] else 0
 
-# Simulating the high heart rate (>100) and respiration spikes you noted
 telemetry_data = pd.DataFrame({
     'Timestamp': [now.strftime('%H:%M:%S'), now.strftime('%H:%M:%S'), now.strftime('%H:%M:%S')],
-    'Heart_Rate_BPM': [104, 102, 105] if st.session_state['emergency_status_active'] else,
-    'Respiration_RPM': [24, 26, 25] if st.session_state['emergency_status_active'] else,
+    'Heart_Rate_BPM': [112, 108, 115] if st.session_state['emergency_status_active'] else,
+    'Respiration_RPM': [25, 24, 26] if st.session_state['emergency_status_active'] else,
     'Core_Temp_F': [101.2, 100.8, 101.4] if st.session_state['emergency_status_active'] else [98.6, 98.4, 98.5],
     'Arduino_Panic_Button': [panic_val, panic_val, panic_val]
 })
@@ -62,7 +61,6 @@ if st.session_state['emergency_status_active']:
     # Interactive clinical checkboxes for the nurse on shift
     check_lung_sounds = st.checkbox("Auscultated Lung Sounds (Checked for diminished breath sounds or crackles)")
     check_cough = st.checkbox("Evaluated Cough / Productive Sputum presence")
-    check_hospital_call = st.checkbox("Initiated Physician/Hospital Transfer protocol if indicated")
     
     # The 'Clear Alert' Button only activates when the clinician completes their physical loop check!
     if check_lung_sounds and check_cough:
