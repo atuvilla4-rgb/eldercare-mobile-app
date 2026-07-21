@@ -34,19 +34,19 @@ else:
 
 st.write("---")
 
-# 5. Core Telemetry Matrix Data
+# 5. Core Telemetry Matrix Data (Fixed the open list syntax here!)
 now = datetime.datetime.now()
 panic_val = 1 if st.session_state['emergency_status_active'] else 0
 telemetry_data = pd.DataFrame({
-    'Timestamp': [now.strftime('%H:%M:%S')] * 3,
+    'Timestamp': [now.strftime('%H:%M:%S'), now.strftime('%H:%M:%S'), now.strftime('%H:%M:%S')],
     'Voice_Status': ['Stable', 'Agitated (Loud Vocalization)', 'Stable'],
     'Eye_Sensor_Alert': ['Clear', 'Obstacle Near Stairs Boundary', 'Clear'],
-    'Respiration_RPM':, # High RPM mimics Circadia diagnostic metrics
+    'Respiration_RPM': [16, 24, 18], 
     'Core_Temp_F': [98.6, 100.2, 98.5],
-    'Arduino_Panic_Button': [panic_val] * 3
+    'Arduino_Panic_Button': [panic_val, panic_val, panic_val]
 })
 
-# 6. ADVANCED ANCHOR: Predictive & Prescriptive Risk Engine
+# 6. Predictive & Prescriptive Risk Engine
 st.markdown("#### 📊 Predictive & Prescriptive Analytics")
 fall_risk_score = 85 if st.session_state['emergency_status_active'] else 15
 infection_risk_score = 90 if telemetry_data['Core_Temp_F'].max() >= 100.0 else 10
@@ -57,7 +57,7 @@ with col_risk1:
 with col_risk2:
     st.metric(label="🔮 Predicted Infection Risk", value=f"{infection_risk_score}%", delta="HIGH RISK (UTI)" if infection_risk_score > 50 else "Normal")
 
-# Prescriptive Clinical Guidance Box (Beating Circadia's simple data logging!)
+# Prescriptive Clinical Guidance Box (Beating Circadia!)
 st.markdown("##### 💊 Prescriptive Care Protocols:")
 if fall_risk_score > 50 or infection_risk_score > 50:
     st.warning("""
