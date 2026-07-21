@@ -2,18 +2,18 @@ import streamlit as st
 import pandas as pd
 import datetime
 
-# 1. Setup layout configurations
-st.set_page_config(page_title="Pakner Cognitive Eldercare", page_icon="👵", layout="centered")
+# 1. Setup layout configurations - Stripped all informal names completely
+st.set_page_config(page_title="Eldercare Intelligence Pro", page_icon="👵", layout="centered")
 
-st.markdown("### 👵 Pakner Cognitive Eldercare Platform")
-st.markdown("*Integrated Healthcare AI Specialization Framework (Descriptive to Cognitive)*")
+st.markdown("### 👵 Eldercare Intelligence Platform")
+st.markdown("*Long-Term Care Clinical Radar & Assessment Tool*")
 st.write("---")
 
 # 2. Initialize Session State Memory for the Alerts
 if 'emergency_status_active' not in st.session_state:
     st.session_state['emergency_status_active'] = True  
 
-# 3. Cybersecurity Status Sidebar (Google Cybersecurity Standard)
+# 3. Cybersecurity Status Sidebar
 st.sidebar.markdown("### 🔒 Cybersecurity Status")
 st.sidebar.success("Database Security: SECURE")
 st.sidebar.info("Audit Log Scan: 0 Anomalies")
@@ -24,11 +24,11 @@ now = datetime.datetime.now()
 panic_val = 1 if st.session_state['emergency_status_active'] else 0
 
 if st.session_state['emergency_status_active']:
-    hr_list = [104, 102, 105]       # Descriptive: Vital spikes past 100
-    resp_list = [24, 25, 24]        # Descriptive: Tachypnea markers
+    hr_list = [104, 106, 104]
+    resp_list = [24, 25, 24]
     temp_list = [101.2, 100.8, 101.4]
-    fall_risk = 85                  # Predictive analytics values
-    infection_risk = 90             # Predictive analytics values
+    fall_risk = 85                  
+    infection_risk = 90             
 else:
     hr_list = [74, 76, 75]
     resp_list = [16, 15, 16]
@@ -36,8 +36,8 @@ else:
     fall_risk = 12
     infection_risk = 8
 
-# 5. [STAGE 1: DESCRIPTIVE ANALYTICS] - Raw Sensor Matrix Capture
-st.markdown("#### 📊 1. Descriptive Analytics (Live Telemetry Feed)")
+# 5. Live Telemetry Feed 
+st.markdown("#### 📊 Live Vital Signs Feed")
 telemetry_data = pd.DataFrame({
     'Timestamp': [now.strftime('%H:%M:%S'), now.strftime('%H:%M:%S'), now.strftime('%H:%M:%S')],
     'Heart_Rate_BPM': hr_list,
@@ -57,56 +57,56 @@ with col3:
 
 st.write("---")
 
-# 6. [STAGE 2 & 3: DIAGNOSTIC & PREDICTIVE ANALYTICS] - Clinical Horizon Models
-st.markdown("#### 🔮 2. Diagnostic & Predictive Modeling")
+# 6. Active Clinical Alerts 
+st.markdown("#### 📋 Active Vitals Correlation & Risk Analysis")
 if st.session_state['emergency_status_active']:
-    st.error(f"📋 **Diagnostic Link:** Vital anomalies match data signatures for **Pneumonia (PNA)** or severe respiratory infection.")
+    st.error(f"⚠️ CRITICAL MEDICAL SIGNATURE: Current metrics closely match data patterns for **Pneumonia (PNA)** or severe respiratory infection.")
 else:
-    st.success("✅ **Baseline Restored:** Clinical signatures currently trace within normal variances.")
+    st.success("✅ **Patient Stable:** Clinical signatures are currently tracking within normal variances.")
 
 col_risk1, col_risk2 = st.columns(2)
 with col_risk1:
-    st.metric(label="Predicted Fall Risk Score", value=f"{fall_risk}%", delta="CRITICAL" if fall_risk > 50 else "Stable")
+    st.metric(label="Calculated Fall Risk", value=f"{fall_risk}%", delta="CRITICAL" if fall_risk > 50 else "Stable")
 with col_risk2:
-    st.metric(label="Predicted Systemic Infection Risk", value=f"{infection_risk}%", delta="HIGH RISK" if infection_risk > 50 else "Stable")
+    st.metric(label="Calculated Infection Risk", value=f"{infection_risk}%", delta="HIGH RISK" if infection_risk > 50 else "Stable")
 
 st.write("---")
 
-# 7. [STAGE 4: PRESCRIPTIVE ANALYTICS] - Automated Care Protocols
-st.markdown("#### 💊 3. Prescriptive Analytics ( bedside Interventions )")
+# 7. Bedside Preventive Protocols 
+st.markdown("#### 💊 Immediate Bedside Care Protocols")
 if st.session_state['emergency_status_active']:
     st.warning("""
-    **Prescribed Preventive Action Logs Activated:**
+    **Required Preventative Actions Activated:**
     *   **Action 1:** Deploy low-cost floor sensor pressure mats to bedside instantly.
     *   **Action 2:** Initiate 15-minute hydration protocol (8oz fluids) to reduce delirium risk.
     *   **Action 3:** Prepare clinical documentation for potential hospital transfer assessment.
     """)
 else:
-    st.info("✅ **Protocol Maintenance:** Standard preventative rounding loops sufficient.")
+    st.info("✅ **Routine Care:** Baseline maintenance. Standard preventative rounding loops sufficient.")
 
 st.write("---")
 
-# 8. [STAGE 5: COGNITIVE AI & HUMAN-IN-THE-LOOP REINFORCEMENT]
-st.markdown("#### 🩺 4. Cognitive Framework & Human-In-The-Loop Validation")
-st.markdown("*Reinforce system intelligence by validating automated machine findings with clinical physical checks:*")
+# 8. Clinician Validation & Check-Off 
+st.markdown("#### 🩺 Nurse Physical Assessment & Validation Loop")
+st.markdown("*Evaluate the patient physically to verify the system findings before clearing the alarm state:*")
 
 if st.session_state['emergency_status_active']:
     check_lung_sounds = st.checkbox("Auscultated Lung Sounds (Verified diminished breath sounds, rales, or crackles)")
     check_cough = st.checkbox("Evaluated Cough Dynamics (Assessed for painful or productive cough indications)")
     
     if check_lung_sounds and check_cough:
-        st.success("🔗 Cognitive Handshake Complete: Human clinical assessment aligns with data predictions.")
+        st.success("🔗 Clinical assessment complete. Finding signatures align with dashboard data.")
         if st.button("⚠️ Clear Emergency State & Log Intervention Cache", use_container_width=True):
             st.session_state['emergency_status_active'] = False
             st.rerun()
     else:
-        st.info("💡 Complete the physical human validation check boxes above to unlock the state reset registry.")
+        st.info("💡 Complete the physical assessment checkboxes above to unlock the baseline reset button.")
 else:
-    st.success("💚 System Clear: Resident safe. Baseline state re-cached in database log archives.")
+    st.success("💚 System Clear: Resident verified safe. Baseline state re-archived in database logs.")
     if st.button("🔄 Force-Trigger Vitals Spike Simulation (For System Testing)", use_container_width=True):
         st.session_state['emergency_status_active'] = True
         st.rerun()
 
 st.write("---")
-st.markdown("#### Telemetry Data Log Table")
+st.markdown("#### Recent Sensor Activity Log")
 st.dataframe(telemetry_data, use_container_width=True)
