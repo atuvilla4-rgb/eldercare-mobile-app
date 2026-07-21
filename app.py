@@ -1,42 +1,50 @@
 import streamlit as st
 import pandas as pd
 import datetime
+import os
 
-# 1. Setup layout configurations - Stripped all informal names completely
+# 1. Setup layout configurations
 st.set_page_config(page_title="Eldercare Intelligence Pro", page_icon="👵", layout="centered")
 
 st.markdown("### 👵 Eldercare Intelligence Platform")
-st.markdown("*Long-Term Care Clinical Radar & Assessment Tool*")
+st.markdown("*Long-Term Care Clinical Radar & Voice Assessment Tool*")
 st.write("---")
 
-# 2. Initialize Session State Memory for the Alerts
+# 2. Automated Voice AI Routing Logic (Integrated directly into the system)
+def trigger_voice_clinical_alert(text_to_speak):
+    # Uses the slow English speech configuration we verified earlier to bypass the fast robotic tone
+    print(f"🎙️ Broadcasting Audio Alert: {text_to_speak}")
+    os.system(f"espeak -v en -s 130 '{text_to_speak}' 2>/dev/null")
+    return True
+
+# 3. Initialize Session State Memory for the Alerts
 if 'emergency_status_active' not in st.session_state:
     st.session_state['emergency_status_active'] = True  
 
-# 3. Cybersecurity Status Sidebar
+# 4. Cybersecurity Status Sidebar
 st.sidebar.markdown("### 🔒 Cybersecurity Status")
 st.sidebar.success("Database Security: SECURE")
 st.sidebar.info("Audit Log Scan: 0 Anomalies")
 st.sidebar.warning(f"Last Security Sync: {datetime.datetime.now().strftime('%H:%M')}")
 
-# 4. Standalone Clinical Logic Variables
+# 5. Standalone Clinical Logic Variables
 now = datetime.datetime.now()
 panic_val = 1 if st.session_state['emergency_status_active'] else 0
 
 if st.session_state['emergency_status_active']:
-    hr_list = [104, 106, 104]
-    resp_list = [24, 25, 24]
+    hr_list = [104, 106, 105]      
+    resp_list = [24, 25, 24]        
     temp_list = [101.2, 100.8, 101.4]
     fall_risk = 85                  
     infection_risk = 90             
 else:
-    hr_list = [74, 76, 75]
-    resp_list = [16, 15, 16]
+    hr_list = [78, 80, 79]
+    resp_list = [16, 17, 16]
     temp_list = [98.6, 98.4, 98.5]
     fall_risk = 12
     infection_risk = 8
 
-# 5. Live Telemetry Feed 
+# 6. Live Telemetry Feed 
 st.markdown("#### 📊 Live Vital Signs Feed")
 telemetry_data = pd.DataFrame({
     'Timestamp': [now.strftime('%H:%M:%S'), now.strftime('%H:%M:%S'), now.strftime('%H:%M:%S')],
@@ -57,7 +65,7 @@ with col3:
 
 st.write("---")
 
-# 6. Active Clinical Alerts 
+# 7. Active Clinical Alerts & Voice Triggers
 st.markdown("#### 📋 Active Vitals Correlation & Risk Analysis")
 if st.session_state['emergency_status_active']:
     st.error(f"⚠️ CRITICAL MEDICAL SIGNATURE: Current metrics closely match data patterns for **Pneumonia (PNA)** or severe respiratory infection.")
@@ -72,7 +80,7 @@ with col_risk2:
 
 st.write("---")
 
-# 7. Bedside Preventive Protocols 
+# 8. Bedside Preventive Protocols 
 st.markdown("#### 💊 Immediate Bedside Care Protocols")
 if st.session_state['emergency_status_active']:
     st.warning("""
@@ -86,7 +94,7 @@ else:
 
 st.write("---")
 
-# 8. Clinician Validation & Check-Off 
+# 9. Clinician Validation & Voice Reset Handshake
 st.markdown("#### 🩺 Nurse Physical Assessment & Validation Loop")
 st.markdown("*Evaluate the patient physically to verify the system findings before clearing the alarm state:*")
 
@@ -98,6 +106,10 @@ if st.session_state['emergency_status_active']:
         st.success("🔗 Clinical assessment complete. Finding signatures align with dashboard data.")
         if st.button("⚠️ Clear Emergency State & Log Intervention Cache", use_container_width=True):
             st.session_state['emergency_status_active'] = False
+            
+            # SPEAK THE SUCCESS MESSAGE THROUGH THE AUDIO CHANNELS!
+            trigger_voice_clinical_alert("Alert cleared. Resident has been verified safe by the caregiver on shift.")
+            
             st.rerun()
     else:
         st.info("💡 Complete the physical assessment checkboxes above to unlock the baseline reset button.")
@@ -105,6 +117,10 @@ else:
     st.success("💚 System Clear: Resident verified safe. Baseline state re-archived in database logs.")
     if st.button("🔄 Force-Trigger Vitals Spike Simulation (For System Testing)", use_container_width=True):
         st.session_state['emergency_status_active'] = True
+        
+        # SPEAK THE WARNING MSG INSTANTLY THE EXACT SECOND THE ALERT FAILS!
+        trigger_voice_clinical_alert("Warning. Critical vitals spike detected. Heart rate is above one hundred. Evaluate for pneumonia risk.")
+        
         st.rerun()
 
 st.write("---")
