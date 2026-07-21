@@ -19,19 +19,29 @@ st.sidebar.success("Database Security: SECURE")
 st.sidebar.info("Audit Log Scan: 0 Anomalies")
 st.sidebar.warning(f"Last Security Sync: {datetime.datetime.now().strftime('%H:%M')}")
 
-# 4. Core Telemetry Matrix Data (Fixed the open list expression syntax errors here!)
+# 4. Standalone Clinical Logic Variables (Bypassing inline array syntax hurdles!)
 now = datetime.datetime.now()
 panic_val = 1 if st.session_state['emergency_status_active'] else 0
 
+if st.session_state['emergency_status_active']:
+    hr_list = [108, 112, 115]      # Spiking past 100 for PNA indication
+    resp_list = [24, 26, 25]       # Tachypnea markers
+    temp_list = [101.2, 100.8, 101.4]
+else:
+    hr_list = [72, 75, 74]         # Stable baseline values
+    resp_list = [16, 18, 17]       # Normal respiration baseline
+    temp_list = [98.6, 98.4, 98.5]
+
+# 5. Core Telemetry Matrix Data 
 telemetry_data = pd.DataFrame({
     'Timestamp': [now.strftime('%H:%M:%S'), now.strftime('%H:%M:%S'), now.strftime('%H:%M:%S')],
-    'Heart_Rate_BPM': [112, 108, 115] if st.session_state['emergency_status_active'] else,
-    'Respiration_RPM': [25, 24, 26] if st.session_state['emergency_status_active'] else,
-    'Core_Temp_F': [101.2, 100.8, 101.4] if st.session_state['emergency_status_active'] else [98.6, 98.4, 98.5],
+    'Heart_Rate_BPM': hr_list,
+    'Respiration_RPM': resp_list,
+    'Core_Temp_F': temp_list,
     'Arduino_Panic_Button': [panic_val, panic_val, panic_val]
 })
 
-# 5. Live Vitals Alert Banner
+# 6. Live Vitals Alert Banner
 st.markdown("#### 🚨 Active Telemetry Alerts")
 latest_entry = telemetry_data.iloc[-1]
 
@@ -40,7 +50,7 @@ if st.session_state['emergency_status_active']:
 else:
     st.success("💚 SYSTEM STATUS: Vitals returned to normal baseline values.")
 
-# 6. Mobile Metric Summary Tiles
+# 7. Mobile Metric Summary Tiles
 col1, col2, col3 = st.columns(3)
 with col1:
     st.metric(label="Heart Rate", value=f"{latest_entry['Heart_Rate_BPM']} BPM", delta="HIGH" if st.session_state['emergency_status_active'] else "Normal")
@@ -51,7 +61,7 @@ with col3:
 
 st.write("---")
 
-# 7. THE HUMAN-IN-THE-LOOP ASSESSMENT PROTOCOL (Your Nursing Wisdom Layer!)
+# 8. THE HUMAN-IN-THE-LOOP ASSESSMENT PROTOCOL (Your Nursing Wisdom Layer!)
 st.markdown("#### 🩺 Nurse Human-in-the-Loop Assessment")
 st.markdown("*Use your clinical judgment to evaluate the clinical data signatures alongside history:*")
 
